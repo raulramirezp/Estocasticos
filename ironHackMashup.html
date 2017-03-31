@@ -1,0 +1,39 @@
+
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Simple Map</title>
+		<meta name="viewport" content="initial-scale=1.0">	
+		<meta charset="utf-8">
+		<style>
+			#map {
+		    height: 100%;
+			}
+			html, body {
+			height: 80%;
+		    margin: 30;
+		    padding: 30;
+			}
+		</style>	
+    </head>
+	<body>
+	    <div id="map"></div>
+		<div>
+			<button id="bt" type="buton" onclick="myFunction()">suggestion!
+			</button>		
+	    </div>
+		<p id="demo"></p>
+    <script>
+		var map;
+      	function initMap() {
+		map = new google.maps.Map(document.getElementById('map'), {
+		center: {lat: 41.8708, lng: -87.6505},
+		zoom: 12
+        });
+		}
+    </script>
+    <script src="https://maps.googleapis.com/maps/api/js?key= AIzaSyATj5FndFjh67_6llrs4r2FbJQEvsbD51o 	&callback=initMap"
+	async defer></script>
+	<script src="Script.js"></script>
+	</body>
+</html>
