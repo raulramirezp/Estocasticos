@@ -286,18 +286,51 @@
 
 
 var map;
+var locations = [];
+var labels =[];
+
 function initMap() {
-  var locationComputerEngineering = {lat: 41.8708, lng: -87.6505};
+	var locationComputerEngineering = {lat: 41.8708, lng: -87.6505};
   map = new google.maps.Map(document.getElementById('map'), {
   center: locationComputerEngineering,
   zoom: 12
   });
-  var infowindow = new google.maps.InfoWindow({
-  content: ""
-});
-  var market = new google.maps.Marker({
+
+	var market = new google.maps.Marker({
     position: locationComputerEngineering,
     icon: 'http://maps.google.com/mapfiles/ms/icons/green-dot.png',
     map:map
   });
+
+	var markers = locations.map(function(location, i) {
+		return new google.maps.Marker({
+			position: location,
+			label: {text: labels[i % labels.length], color: "black"}
+		});
+	});
+
+	// Add a marker clusterer to manage the markers.
+	var markerCluster = new MarkerClusterer(map, markers,
+			{imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});
+}
+
+
+//$(document).ready(
+function getData() {
+    var showData = $('#show-data');
+
+		$.getJSON('https://data.cityofchicago.org/api/views/s6ha-ppgi/rows.json?accessType=DOWNLOAD', function (data) {
+		  console.log(data);
+		  $.each( data.data, function( key, val ) {
+				if(val[19] != null && val[20] != null){
+		    	locations.push(new google.maps.LatLng(val[19], val[20]));
+					labels.push(val[14]);
+				}
+		  });
+			console.log(locations);
+			console.log(labels[0]);
+			initMap();
+			});
+
+	showData.text('Loading the JSON file Affordable_Rental_Housing_Developments from  data.cityofchicago.org.');
 }

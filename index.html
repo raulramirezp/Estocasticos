@@ -14,6 +14,7 @@
 		<!-- link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" -->
 
 		<!-- jQuery library -->
+
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
@@ -53,7 +54,8 @@
 										This website is built with you in mind, you do not need to know the city of Chicago or go to find where to live while you study, we take care of helping you to find the best option for you according to your needs.
 										</p>
 										<ul class="actions">
-											<li><button id="startButton" class="button big" onclick="doMagic()">Start</button></li>
+											<li><button id="startButton" class="button big" onclick="getData()">Start</button></li>
+											<div id="show-data"></div>
 										</ul>
 									</div>
 									<span class="image object">
@@ -177,7 +179,8 @@
 			<script src="assets/js/util.js"></script>
 			<!--[if lte IE 8]><script src="assets/js/ie/respond.min.js"></script><![endif]-->
 			<script src="assets/js/main.js"></script>
-			<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCC4lO1PjOC9xzRaOK86FJoht6VBFYcsB8&callback=initMap"></script>
+			<script src="https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js"></script>
+			<script  async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCC4lO1PjOC9xzRaOK86FJoht6VBFYcsB8&callback=initMap"></script>
 	</body>
 	</body>
 </html>
