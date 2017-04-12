@@ -8,8 +8,11 @@
 
 3.	Description of the datasets and function design
 
-	* 	[Crimes_-_2001_to_present] [https://data.cityofchicago.org/api/views/ijzp-q8t2/rows.json?accessType=DOWNLOAD] [json] [year 2016 info, district, location]
-		Description:	This data set contains information on the crimes of the city of chicago from 2001 to today
+	* 	[Crimes_-_2017_weapons] [https://data.cityofchicago.org/api/views/ijzp-q8t2/rows.json?accessType=DOWNLOAD] [json] [year 2017 info, district, location]
+		Description:	This data set contains information on the crimes of the city of chicago since 2017
+
+	* 	[Crimes_-_2017_assault] [https://data.cityofchicago.org/api/views/i5kt-jcf2/rows.json?accessType=DOWNLOAD'] [json] [year 2017 info, district, location]
+		Description:	This data set contains information on the crimes of the city of chicago since 2017
 
 	*	[Affordable_Rental_Housing_Developments] [https://data.cityofchicago.org/api/views/s6ha-ppgi/rows.json?accessType=DOWNLOAD] [json] [Community area, property, address, phone number, location]
 		Description:	This data set contains information about housing in chicago
