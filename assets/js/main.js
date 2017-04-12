@@ -285,6 +285,7 @@
 
 
 var map;
+var st = 0, ap = 0, we = 0;
 var locations = [], traffic =[], cook = [], crimes = [], crimesassault = [];
 var labels =[];
 
@@ -314,81 +315,37 @@ function initMap() {
 }
 
 
-function getData() {
-		//Variables
-		var st = 0, ap = 0, we = 0;
+function getData(){
+		/*Restart values */
+		document.getElementById('dashboard').innerHTML = "";
+		st = 0, ap = 0, we = 0;
+		console.log("crimes weapon 2017");
+		console.log(locations);
 
-		/*Get data set for Nearby Independent Cook County Grocery Stores in Chicago City*/
-		var xhr = new XMLHttpRequest();
-		xhr.onreadystatechange = function() {
-    if (this.readyState == 4 && this.status == 200) {
-				var json = JSON.parse(this.responseText);
-				locations = [], labels = [];
-				for(key = 0; key < json.data.length; key++) {
-					if(json.data[key][19] != null && json.data[key][20] != null){
-						locations.push(new google.maps.LatLng(json.data[key][19], json.data[key][20]));
-						labels.push(json.data[key][14]);
-					}
-				}
-				initMap(locations, labels);
-				console.log("Rental data");
-				console.log(locations);
+		console.log("crimes weapon 2017");
+		console.log(crimes);
+
+		console.log("crimes assault 2017");
+		console.log(crimesassault);
+
+		console.log("Traffic");
+		console.log(traffic);
+
+		console.log("Independent cook");
+		console.log(cook);
+
+		for( elements in crimes){
+			if(crimes[elements][2] == "STREET")
+				st += 1;
+			else{
+				ap += 1;
 			}
-		};
-		xhr.open('GET', 'https://data.cityofchicago.org/api/views/s6ha-ppgi/rows.json?accessType=DOWNLOAD', true);
-		xhr.send();
-			/*Get dataset for crimes in Chicago City*/
-			$.getJSON('https://data.cityofchicago.org/api/views/itbm-jtnw/rows.json?accessType=DOWNLOAD', function (data) {
-				crimes = [];
-				$.each( data.data, function( key, val ) {
-					if( val[10] != null && ( val[13] != null && val[15] != null ) && (val[27] != null && val[28] != null))
-						crimes.push([val[10],val[13], val[15],val[27], val[28]]);
-				});
-				console.log("crimes weapon 2017");
-				console.log(crimes);
-				we = crimes.length;
-			});
+		}
 
-			$.getJSON('https://data.cityofchicago.org/api/views/i5kt-jcf2/rows.json?accessType=DOWNLOAD', function (data) {
-					crimesassault = [];
-					$.each( data.data, function( key, val ) {
-					if( val[10] != null && ( val[13] != null && val[15] != null ) && (val[27] != null && val[28] != null))
-						crimesassault.push([val[10],val[13], val[15],val[27], val[28]]);
-				});
-				for( elements in crimes){
-					if(crimes[elements][2] == "STREET")
-						st += 1;
-					else{
-						ap += 1;
-					}
-				}
-				console.log("crimes assault 2017");
-				console.log(crimesassault);
-				if( st > 0 && ap > 0 && we > 0)
-					chartsD3(st, ap, we);
-			});
-
-			/*Get dataset for Traffic Tracker-Congestion Estimates by Regions in Chicago City*/
-			$.getJSON('https://data.cityofchicago.org/api/views/t2qc-9pjd/rows.json?accessType=DOWNLOAD', function (data){
-				traffic = [];
-				$.each( data.data, function( key, val ) {
-						traffic.push(key, val);
-				});
-				console.log("Traffic");
-				console.log(traffic);
-			});
-
-			$.getJSON('https://data.cityofchicago.org/api/views/ddxq-pdr6/rows.json?accessType=DOWNLOAD', function (data) {
-				cook	 = [];
-				$.each( data.data, function( key, val ) {
-						cook.push(key, val);
-				});
-				console.log("Independent cook");
-				console.log(cook);
-			});
-
+		we = crimes.length;
+		initMap(locations, labels);
+		chartsD3(st, ap, we);
 }
-
 /*D3*/
 function chartsD3(st, ap, we){
 	function dashboard(id, fData){
@@ -588,7 +545,6 @@ function chartsD3(st, ap, we){
 	        leg= legend(tF);  // create the legend.
 	}
 	/*END D3*/
-
 	var freqData=[
 	{State:'2017',freq:{Street:st, Apartment:ap, Weapons:we}}];
 	/*
