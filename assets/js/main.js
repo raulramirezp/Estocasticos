@@ -286,8 +286,9 @@
 
 var map;
 var st = 0, ap = 0, we = 0;
-var locations = [], traffic =[], cook = [], crimes = [], crimesassault = [];
+var locations = [], rent = [], traffic =[], cook = [], crimes = [], crimesassault = [];
 var labels =[];
+var siteA = {}
 
 function initMap() {
 	var locationComputerEngineering = {lat: 41.8708, lng: -87.6505};
@@ -302,6 +303,12 @@ function initMap() {
     map:map
   });
 
+	var market = new google.maps.Marker({
+    position: siteA,
+    icon: 'http://maps.google.com/mapfiles/ms/icons/red-dot.png',
+    map:map
+  });
+	/*
 	var markers = locations.map(function(location, i) {
 		return new google.maps.Marker({
 			position: location,
@@ -312,30 +319,121 @@ function initMap() {
 	// Add a marker clusterer to manage the markers.
 	var markerCluster = new MarkerClusterer(map, markers,
 			{imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});
+	*/
 }
 
+function distance(x2, x1, y2, y1 ) {
+	return Math.sqrt(Math.pow((x2-x1), 2)+Math.pow((y2-y1), 2));
+}
 
-function getData(){
+function defaultRecommendation(allInformation, closeLocations){
+	var siteAinfor, siteB, currentTotalRent = 0, currentTotalCrimes = 0;
+	/*	area			Community area ,total rents, 	ilegal weapons, assault*/
+	var area1 = [closeLocations[0],0,0,0], area2=[closeLocations[0], 0, 0,0];
+	var lat = 41.8708 , lon = -87.6505;
+
+	//filter Community area
+	for(i in closeLocations){
+		currentTotalRent = allInformation[closeLocations[i]]['rents'].length;
+		currentTotalCrimesW = allInformation[closeLocations[i]]['crimes']['weaponsviolation'].length;
+		currentTotalCrimesA = allInformation[closeLocations[i]]['crimes']['crimesassault'].length;
+	/*
+		console.log(" Total rents to " + closeLocations[i] + " = "+allInformation[closeLocations[i]]['rents'].length);
+		console.log(" Total crimes ts to " + closeLocations[i] + " = " +(
+		allInformation[closeLocations[i]]['crimes']['weaponsviolation'].length+allInformation[closeLocations[i]]['crimes']['crimesassault'].length));
+		console.log(" Traffic to " + closeLocations[i] + " = " +allInformation[closeLocations[i]]['traffic'][0]);
+		*/
+		/*Initial values*/
+		if(area1[1] == 0 && area2[1] == 0){
+			area1[1] = currentTotalRent
+			area2[1] = area1[1];
+			area1[2] = currentTotalCrimesW;
+			area2[2] = area1[2];
+			area1[3] = currentTotalCrimesA;
+			area2[3] = area1[3];
+		}
+		//Update select area
+		if((area1[2]+area1[3]) > (currentTotalCrimesW+currentTotalCrimesA)){
+			area1[0] = closeLocations[i];
+			area1[1] = currentTotalRent;
+			area1[2] = currentTotalCrimesW;
+			area1[3] = currentTotalCrimesA;
+		}
+		/*It is more important the variable assault that weapons because the crime of weapos is considered when
+		it is carried without documents, does not necessarily indicate danger*/
+		else if(	(area1[2]+area1[3]) == (currentTotalCrimesW+currentTotalCrimesA)	){
+			if(area1[3] > currentTotalCrimesA){
+				area1[0] = closeLocations[i];
+				area1[1] = currentTotalRent;
+				area1[2] = currentTotalCrimesW;
+				area1[3] = currentTotalCrimesA;
+			}
+		}
+		if(currentTotalRent > 1)
+			area2 = area1.slice(0);
+
+	}
+
+	console.log("Area mas cercana recomendad " + area1[0]);
+	console.log("Rents " + area1[1]);
+	console.log("Crimes" + (area1[2]+area1[3]));
+
+	/*Filter the win sites*/
+	var moreClose = distance(allInformation[area1[0]]['rents'][0][3]  , lat, allInformation[area1[0]]['rents'][0][4], lon );
+
+	for( i in allInformation[area1[0]]['rents']){
+		if( moreClose >  distance(allInformation[area1[0]]['rents'][i][3]  , lat, allInformation[area1[0]]['rents'][i][4], lon )){
+				moreClose = distance( allInformation[area1[0]]['rents'][i][3] , lat, allInformation[area1[0]]['rents'][i][4], lon );
+				siteAinfor = allInformation[area1[0]]['rents'][i].slice(0);
+			}
+	}
+	console.log(siteAinfor);
+ 	//siteA = new google.maps.LatLng(parseFloat(siteAinfor[3]), parseFloat(siteAinfor[4]));
+	siteA = {lat: parseFloat(siteAinfor[3]), lng: parseFloat(siteAinfor[4])};
+	console.log(siteA);
+	initMap(siteA);
+}
+
+function doMagic(){
 		/*Restart values */
 		document.getElementById('dashboard').innerHTML = "";
 		st = 0, ap = 0, we = 0;
-		console.log("crimes weapon 2017");
-		console.log(locations);
+		var allInformation = {};
+		var closeLocations = [28,32,33,8,24,27,31,29,30,23];
+	/*Solo se tendran en cuenta las "Community Areas" donde hayan lugares en arriendo
+		Make links
+	*/
+	for( i in rent){
+		if (!(rent[i][0] in allInformation))
+			allInformation[rent[i][0]] = new Object({'rents':	new Array(),
+																								'crimes': new Object({
+																																			'weaponsviolation':	new Array(),
+																																		  'crimesassault':	new Array()}),
+																								'traffic': new Array()});
+		allInformation[rent[i][0]]['rents'].push([rent[i][1], rent[i][2], rent[i][3], rent[i][4], rent[i][5]]);
+	}
 
-		console.log("crimes weapon 2017");
-		console.log(crimes);
+	for( i in crimes){
+		if ((crimes[i][0] in allInformation))
+			allInformation[crimes[i][0]]['crimes']['weaponsviolation'].push([crimes[i][1], crimes[i][2], crimes[i][3], crimes[i][4], crimes[i][5]]);
+		}
 
-		console.log("crimes assault 2017");
-		console.log(crimesassault);
+	for( i in crimesassault){
+		if ((crimesassault[i][0] in allInformation))
+			allInformation[crimesassault[i][0]]['crimes']['crimesassault'].push([crimesassault[i][1], crimesassault[i][2], crimesassault[i][3], crimesassault[i][4], crimesassault[i][5]]);
+		}
 
-		console.log("Traffic");
-		console.log(traffic);
+	for( i in traffic){
+		if ((traffic[i][0] in allInformation))
+			allInformation[traffic[i][0]]['traffic'].push([traffic[i][1]]);
+	}
 
-		console.log("Independent cook");
-		console.log(cook);
+	/*----Finish links----*/
+	defaultRecommendation(allInformation, closeLocations);
+
 
 		for( elements in crimes){
-			if(crimes[elements][2] == "STREET")
+			if(crimes[elements][3] == "STREET")
 				st += 1;
 			else{
 				ap += 1;
@@ -343,9 +441,12 @@ function getData(){
 		}
 
 		we = crimes.length;
-		initMap(locations, labels);
+		//initMap(locations, labels);
 		chartsD3(st, ap, we);
 }
+
+
+
 /*D3*/
 function chartsD3(st, ap, we){
 	function dashboard(id, fData){
