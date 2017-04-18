@@ -4,6 +4,9 @@ var locations = [], rent = [], traffic =[], cook = [], crimes = [], crimesassaul
 var labels =[];
 var siteA = {}
 var siteB = {}
+/*variables que contendran la informacion en "infowindow" de google maps*/
+var contentStringSiteA;
+var contentStringSiteB;
 
 function initMap() {
 	var locationComputerEngineering = {lat: 41.8708, lng: -87.6505};
@@ -46,7 +49,25 @@ function initMap() {
 
 	marker.addListener('click', function() {
 	infowindow.open(map, marker);
-	});
+});
+
+  var infowindowSiteA = new google.maps.InfoWindow({
+  	content: contentStringSiteA,
+    maxWidth: 300
+  });
+
+	markerA.addListener('click', function() {
+	infowindowSiteA.open(map, markerA);
+});
+
+  var infowindowSiteB = new google.maps.InfoWindow({
+  	content: contentStringSiteB,
+    maxWidth: 300
+  });
+
+	markerB.addListener('click', function() {
+	infowindowSiteB.open(map, markerB);
+});
 
 
 	/*
@@ -139,6 +160,47 @@ function defaultRecommendation(allInformation, closeLocations){
  	//siteA = new google.maps.LatLng(parseFloat(siteAinfor[3]), parseFloat(siteAinfor[4]));
 	siteA = {lat: parseFloat(siteinfor[0][3]), lng: parseFloat(siteinfor[0][4])};
 	siteB = {lat: parseFloat(siteinfor[1][3]), lng: parseFloat(siteinfor[1][4])};
+	console.log(siteinfor);
+	/*Build InfoWindows*/
+	contentStringSiteA = '<div id="contentSiteA">'+
+						'<div id="siteNoticeA">'+
+						'</div>'+
+						'<h2 id="firstHeading" class="firstHeading">Recommended site 1!!!</h2>'+
+						'<div id="bodyContent">'+
+						'<p>"This apartment has been chosen because it is the best option among all'+
+						'the offers in chicaco, according to our algorithm of recommendation,which takes into account various types of crimes that occur throughout the city,'+
+						 'and the distance of this with your university UIC, To be able to select the safest,affordable, comfortable and dry place to live while you study.'+
+						 '<h3 >Basic information of this site:</h3>'+
+						 '<h5 id="firstHeading" class="firstHeading">Crimes in 2017 in the Community area</h5>'+
+						 (area1[2]+area1[3]) +
+						 '<h5 id="firstHeading" class="firstHeading">Property:</h5>'+
+						 siteinfor[0][0]+
+						 '<h5 id="firstHeading" class="firstHeading">Address:</h5>'+
+						 siteinfor[0][1]+
+						 '<h5 id="firstHeading" class="firstHeading">Phone:</h5>'+
+						 siteinfor[0][2]+
+						'</div>'+
+						'</div>';
+	contentStringSiteB = '<div id="content">'+
+					'<div id="siteNotice">'+
+					'</div>'+
+					'<h2 id="firstHeading" class="firstHeading">Recommended site 2!!!</h2>'+
+					'<div id="bodyContent">'+
+					'<p>"This apartment has been chosen because it is the best option among all'+
+					'the offers in chicaco, according to our algorithm of recommendation,which takes into account various types of crimes that occur throughout the city,'+
+					 'and the distance of this with your university UIC, To be able to select the safest,affordable, comfortable and dry place to live while you study.'+
+					 '<h3 >Basic information of this site:</h3>'+
+					 '<h5 id="firstHeading" class="firstHeading">Crimes in 2017 in the Community area:</h5>'+
+					 (area1[2]+area1[3]) +
+					 '<h5 id="firstHeading" class="firstHeading">Property:</h5>'+
+					 siteinfor[1][0]+
+					 '<h5 id="firstHeading" class="firstHeading">Address:</h5>'+
+					 siteinfor[1][1]+
+					 '<h5 id="firstHeading" class="firstHeading">Phone:</h5>'+
+					 siteinfor[1][2]+
+					'</div>'+
+					'</div>';
+
 	initMap(siteA, siteB);
 }
 
@@ -148,6 +210,8 @@ function doMagic(){
 		st = 0, ap = 0, we = 0;
 		var allInformation = {};
 		var closeLocations = [28,32,33,8,24,27,31,29,30,23];
+		contentStringSiteA;
+		contentStringSiteB;
 	/*Solo se tendran en cuenta las "Community Areas" donde hayan lugares en arriendo
 		Make links
 	*/
