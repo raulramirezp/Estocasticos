@@ -86,6 +86,7 @@ function distance(x2, x1, y2, y1 ) {
 	return Math.sqrt(Math.pow((x2-x1), 2)+Math.pow((y2-y1), 2));
 }
 
+/*algorithm recommendation*/
 function defaultRecommendation(allInformation, closeLocations){
 	var siteinfor = [new Array(),new Array()], currentTotalRent = 0, currentTotalCrimes = 0;
 	/*	area			Community area ,total rents, 	ilegal weapons, assault*/
@@ -134,9 +135,9 @@ function defaultRecommendation(allInformation, closeLocations){
 
 	}
 
-	console.log("Area mas cercana recomendad " + area1[0]);
-	console.log("Rents " + area1[1]);
-	console.log("Crimes" + (area1[2]+area1[3]));
+	console.log("Area mas cercana recomendada " + area1[0]);
+	console.log("Rentas " + area1[1]);
+	console.log("Crimenes" + (area1[2]+area1[3]));
 
 	/*Filter the win sites*/
 	var moreClose = [distance(allInformation[area1[0]]['rents'][0][3]  , lat, allInformation[area1[0]]['rents'][0][4], lon ),
