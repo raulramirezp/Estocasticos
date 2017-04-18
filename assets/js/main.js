@@ -1,6 +1,6 @@
 var map;
 var st = 0, ap = 0, we = 0;
-var locations = [], rent = [], traffic =[], cook = [], crimes = [], crimesassault = [];
+var locations = [], locationsToShow = [],rent = [], traffic =[], cook = [], crimes = [], crimesassault = [];
 var labels =[];
 var siteA = {}
 var siteB = {}
@@ -69,9 +69,7 @@ function initMap() {
 	infowindowSiteB.open(map, markerB);
 });
 
-
-	/*
-	var markers = locations.map(function(location, i) {
+	var markers = locationsToShow.map(function(location, i) {
 		return new google.maps.Marker({
 			position: location,
 			label: {text: labels[i % labels.length], color: "black"}
@@ -81,7 +79,7 @@ function initMap() {
 	// Add a marker clusterer to manage the markers.
 	var markerCluster = new MarkerClusterer(map, markers,
 			{imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});
-	*/
+
 }
 
 function distance(x2, x1, y2, y1 ) {
@@ -204,14 +202,18 @@ function defaultRecommendation(allInformation, closeLocations){
 	initMap(siteA, siteB);
 }
 
+function RestartValues(){
+	document.getElementById('dashboard').innerHTML = "";
+	st = 0, ap = 0, we = 0;
+	contentStringSiteA = "";
+	contentStringSiteB = "";
+	locationsToShow = [];
+}
 function doMagic(){
 		/*Restart values */
-		document.getElementById('dashboard').innerHTML = "";
-		st = 0, ap = 0, we = 0;
+		RestartValues();
 		var allInformation = {};
 		var closeLocations = [28,32,33,8,24,27,31,29,30,23];
-		contentStringSiteA;
-		contentStringSiteB;
 	/*Solo se tendran en cuenta las "Community Areas" donde hayan lugares en arriendo
 		Make links
 	*/
@@ -262,6 +264,12 @@ function makeD3Graphs(){
 	chartsD3(st, ap, we);
 }
 
+function showAllSites() {
+		RestartValues();
+		locationsToShow = locations;
+		initMap(locationsToShow);
+		makeD3Graphs();
+}
 /********************   D3 taken from https://bl.ocks.org/mbostock ************************************/
 function chartsD3(st, ap, we){
 	function dashboard(id, fData){
