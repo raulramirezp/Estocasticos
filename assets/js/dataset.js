@@ -42,11 +42,11 @@ $( document ).ready(function() {
   }
 /*
   function rentPlaces(){
-  //	 var data = {};
-  	 $.ajax({url: 'http://www.zillow.com/webservice/GetSearchResults.htm?zws-id=X1-ZWz1fr0ox2to23_6v82r&address=3708%20W%20Lexington%20St&citystatezip=Chicago',
-//  	 data: data,
+  	 var data = {};
+  	 $.ajax({url: 'http://www.zillow.com/webservice/GetSearchResults.htm?zws-id=X1-ZWz1fr0ox2to23_6v82r&address=3708%20W%20Lexington%20St&citystatezip=Chicagocallback=?',
+  	 data: data,
   	 type: 'GET',
-  	 dataType: 'jsonp',
+  	 dataType: 'xml',
   	 success: function(xmlResponse){
      	var parser = new DOMParser();
      	var xmlDoc = parser.parseFromString(data, "text/xml");
@@ -54,10 +54,22 @@ $( document ).ready(function() {
      }
   	 });
   }
-  */
+*/
   dataFactory('https://data.cityofchicago.org/api/views/s6ha-ppgi/rows.json?accessType=DOWNLOAD','rent');
   dataFactory('https://data.cityofchicago.org/api/views/itbm-jtnw/rows.json?accessType=DOWNLOAD', 'crimes');
   dataFactory('https://data.cityofchicago.org/api/views/i5kt-jcf2/rows.json?accessType=DOWNLOAD', 'crimesassault');
   dataFactory('https://data.cityofchicago.org/api/views/t2qc-9pjd/rows.json?accessType=DOWNLOAD', 'traffic');
+
+//  curl -H "token:<ztyBTaKSaXtwtAIHqbXAGdqOpNqjNVht>" "http://www.ncdc.noaa.gov/cdo-web/api/v2/data?datasetid=GHCND&locationid=ZIP:28801&startdate=2010-05-01&enddate=2010-05-01";
+/*  var datas = {};
+  $.ajax({
+    url:'www.ncdc.noaa.gov/cdo-web/api/v2/locations?locationcategoryid=CITY&sortfield=name&sortorder=desc',
+    data: datas,
+    headers:{ token:'ztyBTaKSaXtwtAIHqbXAGdqOpNqjNVht' },
+    type: 'GET',
+    dataType: 'json',
+  });
+  console.log(datas);
+  */
 
 });
