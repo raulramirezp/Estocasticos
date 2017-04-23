@@ -6,7 +6,6 @@ $( document ).ready(function() {
   			$.each( data.data, function( key, val ) {
   			if(val[19] != null && val[20] != null){
   				locations.push(new google.maps.LatLng(val[19], val[20]));
-  				labels.push(val[14]);
           /*Community Area, property, addres, phone, lat, lon*/
           rent.push([val[9],val[11],val[12],val[14], val[19], val[20]]);
   			}
@@ -38,6 +37,16 @@ $( document ).ready(function() {
   			});
         //console.log(data);
   		}
+      else if (type == "parks") {
+        parks = [], parksLocations =[];
+        $.each( data.data, function( key, val ) {
+          /*Park name, address, area, lat, lon  */
+          if(val[82][1] != null && val[82][2] != null)
+            parks.push([val[9],val[10]]);
+            parksLocations.push(new google.maps.LatLng(val[82][1], val[82][2]));
+        });
+        console.log(parks);
+      }
   	});
   }
 /*
@@ -59,7 +68,7 @@ $( document ).ready(function() {
   dataFactory('https://data.cityofchicago.org/api/views/itbm-jtnw/rows.json?accessType=DOWNLOAD', 'crimes');
   dataFactory('https://data.cityofchicago.org/api/views/i5kt-jcf2/rows.json?accessType=DOWNLOAD', 'crimesassault');
   dataFactory('https://data.cityofchicago.org/api/views/t2qc-9pjd/rows.json?accessType=DOWNLOAD', 'traffic');
-
+  dataFactory('https://data.cityofchicago.org/api/views/2eaw-bdhe/rows.json?accessType=DOWNLOAD', 'parks')
 //  curl -H "token:<ztyBTaKSaXtwtAIHqbXAGdqOpNqjNVht>" "http://www.ncdc.noaa.gov/cdo-web/api/v2/data?datasetid=GHCND&locationid=ZIP:28801&startdate=2010-05-01&enddate=2010-05-01";
 /*  var datas = {};
   $.ajax({
@@ -71,5 +80,20 @@ $( document ).ready(function() {
   });
   console.log(datas);
   */
+  $.ajax({
+  	url: "http://api.openweathermap.org/data/2.5/weather?q=chicago&appid=6aa0bdb1f586c5630d60b6237dfce45c",
+  	dataType: 'JSON',
+  	type: "GET",
+
+  	success: function(data){
+
+  		var iconUrl = "http://openweathermap.org/img/w/" + data.weather[0].icon + ".png";
+  		var weatherIcon = "<img src='" + iconUrl + "'>";
+  		$(document).ready(function(){
+  			document.getElementById('weather').innerHTML= "<p>the weather is: <b>" + data.weather[0].description + "</b>" +"</p>";
+        document.getElementById("imagen").src = iconUrl;
+  		});
+  	}
+  });
 
 });

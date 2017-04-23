@@ -1,7 +1,6 @@
 var map;
 var st = 0, ap = 0, we = 0;
-var locations = [], rent = [], traffic =[], cook = [], crimes = [], crimesassault = [];
-var labels =[];
+var locations = [], rent = [], traffic =[], cook = [], crimes = [], crimesassault = [],parks = [],parksLocations = [];
 var siteA = {}
 var siteB = {}
 /*variables que contendran la informacion en "infowindow" de google maps*/
@@ -21,16 +20,6 @@ function initMap() {
     map:map
   });
 
-	var markerA = new google.maps.Marker({
-    position: siteA,
-    icon: 'http://maps.google.com/mapfiles/ms/icons/red-dot.png',
-    map:map
-  });
-	var markerB = new google.maps.Marker({
-    position: siteB,
-    icon: 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png',
-    map:map
-  });
 	var contentString = '<div id="content">'+
             '<div id="siteNotice">'+
             '</div>'+
@@ -51,6 +40,17 @@ function initMap() {
 		infowindow.open(map, marker);
 	});
 	function drawRecommended(){
+
+			var markerA = new google.maps.Marker({
+		    position: siteA,
+		    icon: 'https://maps.google.com/mapfiles/kml/shapes/homegardenbusiness.png',
+		    map:map
+		  });
+			var markerB = new google.maps.Marker({
+		    position: siteB,
+		    icon: 'https://maps.google.com/mapfiles/kml/shapes/homegardenbusiness.png',
+		    map:map
+		  });
 		  var infowindowSiteA = new google.maps.InfoWindow({
 		  	content: contentStringSiteA,
 		    maxWidth: 300
@@ -69,17 +69,91 @@ function initMap() {
 			infowindowSiteB.open(map, markerB);
 		});
 	}
-	function markersCluster(){
-		var markers = locations.map(function(location, i) {
-			return new google.maps.Marker({
-				position: location,
-				label: {text: labels[i % labels.length], color: "black"}
+
+	function parksCluster(){
+		var contentStringSites = [parks.length];
+		var infowindowSites = [parks.length];
+
+
+		for(i in parks){
+			/*Create content for each site*/
+			contentStringSites[i] = '<div id="contentSiteA">'+
+								'<div id="siteNoticeA">'+
+								'</div>'+
+								'<h2 id="firstHeading" class="firstHeading">Park information</h2>'+
+								'<div id="bodyContent">'+
+								'<h5 id="firstHeading" class="firstHeading">Park name:</h5>'+
+								parks[i][0]+
+								'<h5 id="firstHeading" class="firstHeading">Address:</h5>'+
+								parks[i][1]+
+								'</div>'+
+								'</div>';
+			/*Create new google InfoWindow for each site*/
+			infowindowSites[i] = new google.maps.InfoWindow({
+							  	content: contentStringSites[i],
+							    maxWidth: 300
 			});
+		}
+
+		var i = 0;
+		var markers = parksLocations.map(function(location, i) {
+			var marker = new google.maps.Marker({
+				position: location,
+			});
+			marker.addListener('click', function() {
+				infowindowSites[i++].open(map, marker);
+			});
+		  return marker;
+		});
+
+		// Add a marker clusterer to manage the markers.
+		var parksCluster = new MarkerClusterer(map, markers,
+				{imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m1.png'});
+
+	}
+	function markersCluster(){
+		var contentStringSites = [locations.length];
+		var infowindowSites = [locations.length];
+
+
+		for(i in locations){
+			/*Create content for each site*/
+			contentStringSites[i] = '<div id="contentSiteA">'+
+								'<div id="siteNoticeA">'+
+								'</div>'+
+								'<h2 id="firstHeading" class="firstHeading">Site information</h2>'+
+								'<div id="bodyContent">'+
+								'<h5 id="firstHeading" class="firstHeading">Community area:</h5>'+
+								rent[i][0]+
+								'<h5 id="firstHeading" class="firstHeading">Property:</h5>'+
+								rent[i][1]+
+								'<h5 id="firstHeading" class="firstHeading">Address:</h5>'+
+								rent[i][2]+
+								'<h5 id="firstHeading" class="firstHeading">Phone:</h5>'+
+								rent[i][3]+
+								'</div>'+
+								'</div>';
+			/*Create new google InfoWindow for each site*/
+			infowindowSites[i] = new google.maps.InfoWindow({
+							  	content: contentStringSites[i],
+							    maxWidth: 300
+			});
+		}
+		var i = 0;
+		var markers = locations.map(function(location, i) {
+			var marker = new google.maps.Marker({
+				position: location,
+			});
+			marker.addListener('click', function() {
+				infowindowSites[i++].open(map, marker);
+			});
+		  return marker;
 		});
 
 		// Add a marker clusterer to manage the markers.
 		var markerCluster = new MarkerClusterer(map, markers,
 				{imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});
+
 	}
 
 		function drawPaths(){
@@ -117,7 +191,7 @@ function initMap() {
 				service.getDistanceMatrix({
 				origins: [siteA, siteB],
 				destinations: [locationComputerEngineering,locationComputerEngineering],
-				travelMode: 'WALKING',
+				travelMode: 'DRIVING',
 				unitSystem: google.maps.UnitSystem.METRIC,
 				avoidHighways: false,
 				avoidTolls: false
@@ -131,17 +205,22 @@ function initMap() {
 				for (var i = 0; i < originList.length; i++)
 	      	results.push(response.rows[i].elements);
 				var elements = []
-				for (var j = 0; j < results.length; j++) {
+				for (var j = 0; j < results.length; j++)
 					elements.push(results[j]);
-					console.log(elements[j][0].distance.text);
-					console.log(elements[j][0].duration.text);
-				}
+				document.getElementById("distanceA").innerHTML = "Distance to UIC = "+elements[0][0].distance.text;
+				document.getElementById("durationA").innerHTML = "Duration to UIC = "+elements[0][0].duration.text;
+				document.getElementById("typeA").innerHTML = "DRIVING";
+
+				document.getElementById("distanceB").innerHTML = "Distance to UIC = "+elements[1][0].distance.text;
+				document.getElementById("durationB").innerHTML = "Duration to UIC = "+elements[1][0].duration.text;
+				document.getElementById("typeB").innerHTML = "DRIVING";
 			}
 		});
 	}
 	initMap.drawPaths = drawPaths;
 	initMap.markersCluster = markersCluster;
 	initMap.drawRecommended = drawRecommended;
+	initMap.parksCluster = parksCluster;
 }
 
 function distance(x2, x1, y2, y1 ) {
@@ -196,11 +275,11 @@ function defaultRecommendation(allInformation, closeLocations){
 			area2 = area1.slice(0);
 
 	}
-
+/*
 	console.log("Area mas cercana recomendada " + area1[0]);
 	console.log("Rentas " + area1[1]);
 	console.log("Crimenes" + (area1[2]+area1[3]));
-
+*/
 	/*Filter the win sites*/
 	var moreClose = [distance(allInformation[area1[0]]['rents'][0][3]  , lat, allInformation[area1[0]]['rents'][0][4], lon ),
 										distance(allInformation[area1[0]]['rents'][1][3]  , lat, allInformation[area1[0]]['rents'][1][4], lon )];
@@ -261,9 +340,9 @@ function defaultRecommendation(allInformation, closeLocations){
 					 siteinfor[1][2]+
 					'</div>'+
 					'</div>';
-
-	initMap.drawRecommended();
+	//initMap();
 	initMap.drawPaths();
+	initMap.drawRecommended();
 
 }
 
@@ -315,6 +394,10 @@ function doMagic(){
 
 }
 
+function showAllParks(){
+	RestartValues();
+	initMap.parksCluster();
+}
 function makeD3Graphs(){
 	for( elements in crimes){
 		if(crimes[elements][3] == "STREET")
