@@ -71,13 +71,13 @@ function initMap() {
 	}
 
 	function parksCluster(){
-		var contentStringSites = [parks.length];
-		var infowindowSites = [parks.length];
+		var contentStringParks = [parks.length];
+		var infowindowParks = [parks.length];
 
 
 		for(i in parks){
 			/*Create content for each site*/
-			contentStringSites[i] = '<div id="contentSiteA">'+
+			contentStringParks[i] = '<div id="contentSiteA">'+
 								'<div id="siteNoticeA">'+
 								'</div>'+
 								'<h2 id="firstHeading" class="firstHeading">Park information</h2>'+
@@ -89,26 +89,29 @@ function initMap() {
 								'</div>'+
 								'</div>';
 			/*Create new google InfoWindow for each site*/
-			infowindowSites[i] = new google.maps.InfoWindow({
-							  	content: contentStringSites[i],
-							    maxWidth: 300
-			});
 		}
 
-		var i = 0;
+		for ( i in parks){
+			infowindowParks[i] = new google.maps.InfoWindow({
+									content: contentStringParks[i],
+									maxWidth: 300
+			});
+		}
+		for(i in parks){
 		var markers = parksLocations.map(function(location, i) {
 			var marker = new google.maps.Marker({
 				position: location,
 			});
 			marker.addListener('click', function() {
-				infowindowSites[i++].open(map, marker);
+				infowindowParks[i].open(map, marker);
+
 			});
 		  return marker;
 		});
-
+		}
 		// Add a marker clusterer to manage the markers.
 		var parksCluster = new MarkerClusterer(map, markers,
-				{imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m1.png'});
+				{imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});
 
 	}
 	function markersCluster(){
@@ -134,22 +137,24 @@ function initMap() {
 								'</div>'+
 								'</div>';
 			/*Create new google InfoWindow for each site*/
+		}
+		for( i in locations){
 			infowindowSites[i] = new google.maps.InfoWindow({
-							  	content: contentStringSites[i],
-							    maxWidth: 300
+									content: contentStringSites[i],
+									maxWidth: 300
 			});
 		}
-		var i = 0;
+		for( i in locations){
 		var markers = locations.map(function(location, i) {
 			var marker = new google.maps.Marker({
 				position: location,
 			});
 			marker.addListener('click', function() {
-				infowindowSites[i++].open(map, marker);
+				infowindowSites[i].open(map, marker);
 			});
 		  return marker;
 		});
-
+		}
 		// Add a marker clusterer to manage the markers.
 		var markerCluster = new MarkerClusterer(map, markers,
 				{imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});
