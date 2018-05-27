@@ -5,94 +5,99 @@
 	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
 -->
 <html>
-	<head>
-		<title>Mashup IronHacks</title>
-		<meta charset="utf-8" />
-		<meta name="Proyecto Estocasticos">
-		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
-		<link rel="stylesheet" href="assets/css/main.css" />
-		<!-- link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" -->
+<head>
+    <title>Mashup IronHacks</title>
+    <meta charset="utf-8"/>
+    <meta name="Proyecto Estocasticos">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"/>
+    <link rel="stylesheet" href="assets/css/main.css"/>
+    <!-- link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" -->
 
-		<!-- jQuery library -->
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="assets/js/dataset.js"></script>
+</head>
+<body>
 
-		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
-		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-		<script src="assets/js/dataset.js"></script>
-	</head>
-	<body>
+<!-- Wrapper -->
+<div id="wrapper">
 
-		<!-- Wrapper -->
-			<div id="wrapper">
+    <!-- Main -->
+    <div id="main">
+        <div class="inner">
 
-				<!-- Main -->
-					<div id="main">
-						<div class="inner">
+            <!-- Header -->
+            <header id="header">
+                <a href="index.html" class="logo"><strong>Mashup</strong> Estocásticos</a>
+            </header>
 
-							<!-- Header -->
-								<header id="header">
-									<a href="index.html" class="logo"><strong>Mashup</strong>Estocasticos</a>
-								</header>
+            <!-- Banner -->
+            <section id="banner">
+                <div class="content">
+                    <header>
+                        <h1>Tu mejor lugar en Chicago<br/>
+                        </h1>
+                        <p>Si deseas vivir en chicago, esta aplicación es para tí
 
-							<!-- Banner -->
-								<section id="banner">
-									<div class="content">
-										<header>
-											<h1>Tu mejor lugar en Chicago<br />
-											</h1>
-											<p>Si deseas vivir en chicago, esta aplicación es para tí
-
-											</p>
-										</header>
-										<p>
-										No busques más, solamente responde 3 sencillas preguntas y te daremos la mejor opción para tu vivienda en esta cuidad
-										</p>
-										<p>
-											Selecciona el nivel de relevancia, entre 0 y 10, que tienen para tí los siguientes aspectos
-										</p>
-										<form>
-											<b>Precio de renta:</b><br>
-											<input type="number" id="price" min="0" max="10"><br>
-											<br><b>Nivel de seguridad en la zona:</b><br>
-											<input type="number" id="security" min="0" max="10"><br>
-											<br><b>Cantidad de parques en la zona:</b><br>
-											<input type="number" id="parks" min="0" max="10"><br>
-										</form>
-										<p>
-										<h3 >Puedes seleccionar el indicador del mapa para obtener mayor información</h3>
-										</p>
-										<ul class="actions">
-											<li><button id="startButton" class="button big" onclick="findPlace()">Recomiendame!</button></li>
-											<div id="show-data"></div>
-										</ul>
-										<ul class="actions">
-											<li><button id="Button" class="button big" onclick="showAllSites()">Todos los sitios!</button></li>
-											<div id="show-data"></div>
-										</ul>
-										<ul class="actions">
-											<li><button id="Button" class="button" onclick="showAllParks()">Ver parques!</button></li>
-										</ul>
-									</div>
-									<span class="image object">
+                        </p>
+                    </header>
+                    <p>
+                        No busques más, solamente responde 3 sencillas preguntas y te daremos la mejor opción para tu
+                        vivienda en esta cuidad
+                    </p>
+                    <p>
+                        Selecciona el nivel de relevancia, entre 0 y 10, que tienen para tí los siguientes aspectos
+                    </p>
+                    <form>
+                        <b>Precio de renta:</b><br>
+                        <input type="number" id="price" min="0" max="10"><br>
+                        <br><b>Nivel de seguridad en la zona:</b><br>
+                        <input type="number" id="security" min="0" max="10"><br>
+                        <br><b>Cantidad de parques en la zona:</b><br>
+                        <input type="number" id="parks" min="0" max="10"><br>
+                    </form>
+                    <p>
+                    <h3>Puedes seleccionar el indicador del mapa para obtener mayor información</h3>
+                    </p>
+                    <ul class="actions">
+                        <li>
+                            <button id="startButton" class="button big" onclick="findPlace()">Recomiendame!</button>
+                        </li>
+                        <div id="show-data"></div>
+                    </ul>
+                    <ul class="actions">
+                        <li>
+                            <button id="Button" class="button big" onclick="showAllSites()">Todos los sitios!</button>
+                        </li>
+                        <div id="show-data"></div>
+                    </ul>
+                    <ul class="actions">
+                        <li>
+                            <button id="Button" class="button" onclick="showAllParks()">Ver parques!</button>
+                        </li>
+                    </ul>
+                </div>
+                <span class="image object">
 									<div id="map"></div>
 									</span>
 
-								</section>
+            </section>
 
-						</div>
-					</div>
+        </div>
+    </div>
 
-			</div>
+</div>
 
-		<!-- Scripts -->
-			<script src="assets/js/jquery.min.js"></script>
-			<script src="assets/js/skel.min.js"></script>
-			<script src="assets/js/util.js"></script>
-			<!--[if lte IE 8]><script src="assets/js/ie/respond.min.js"></script><![endif]-->
-			<script src="assets/js/main.js"></script>
-			<script src="assets/js/html5.js"></script>
-			<script src="https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js"></script>
-			<script  async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCC4lO1PjOC9xzRaOK86FJoht6VBFYcsB8&callback=initMap"></script>
-	</body>
-	</body>
+<!-- Scripts -->
+<script src="assets/js/jquery.min.js"></script>
+<script src="assets/js/skel.min.js"></script>
+<script src="assets/js/util.js"></script>
+<script src="assets/js/main.js"></script>
+<script src="assets/js/html5.js"></script>
+<script src="https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js"></script>
+<script async defer
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCC4lO1PjOC9xzRaOK86FJoht6VBFYcsB8&callback=initMap"></script>
+</body>
 </html>
