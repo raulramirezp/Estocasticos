@@ -11,6 +11,7 @@
     <meta name="Proyecto Estocasticos">
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"/>
     <link rel="stylesheet" href="assets/css/main.css"/>
+    <link rel="stylesheet" href="assets/css/flex.css"/>
     <!-- link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" -->
 
     <!-- jQuery library -->
@@ -51,12 +52,35 @@
                         Selecciona el nivel de relevancia, entre 0 y 10, que tienen para tí los siguientes aspectos
                     </p>
                     <form>
-                        <b>Precio de renta:</b><br>
-                        <input type="number" id="price" min="0" max="10"><br>
-                        <br><b>Nivel de seguridad en la zona:</b><br>
-                        <input type="number" id="security" min="0" max="10"><br>
-                        <br><b>Cantidad de parques en la zona:</b><br>
-                        <input type="number" id="parks" min="0" max="10"><br>
+                        
+                        <div class="container">
+                            <h4 class="text-left-title">Puntaje</h4>
+                        </div>  
+                    
+                        <div class="container">
+                            <b class="text">Precio de renta:</b>
+                            <input class="text-left" type="number" id="price" min="0" max="10">
+                        </div>
+                        <div class="container">
+                            <b class="text">Nivel de seguridad en la zona:</b>
+                            <input class="text-left" type="number" id="security" min="0" max="10">
+                        </div>
+
+                        <div class="container">
+                            <b class="text">Cantidad de parques en la zona:</b>
+                            <input class="text-left" type="number" id="parks" min="0" max="10">
+                        </div>
+                        
+                        <div class="container">
+                            <div class="text-left hr-style">
+                            </div>
+                        </div>
+                        
+                        <div class="container">
+                            <h4 class="text">Total</h4>
+                            <label for="Total" class="text-left" id="total"></label>
+                        </div>
+                        
                     </form>
                     <p>
                     <h3>Puedes seleccionar el indicador del mapa para obtener mayor información</h3>
