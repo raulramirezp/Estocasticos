@@ -8,7 +8,7 @@
 	<head>
 		<title>Mashup IronHacks</title>
 		<meta charset="utf-8" />
-		<meta name="Raul Alfonso Ramirez Penagos">
+		<meta name="Proyecto Estocasticos">
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 		<link rel="stylesheet" href="assets/css/main.css" />
 		<!-- link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" -->
@@ -31,107 +31,52 @@
 
 							<!-- Header -->
 								<header id="header">
-									<a href="index.html" class="logo"><strong>Mashup</strong>IronHacks</a>
-									<ul class="icons">
-										<li><a href="#" class="icon fa-twitter"><span class="label">Twitter</span></a></li>
-										<li><a href="#" class="icon fa-facebook"><span class="label">Facebook</span></a></li>
-										<li><a href="#" class="icon fa-snapchat-ghost"><span class="label">Snapchat</span></a></li>
-										<li><a href="#" class="icon fa-instagram"><span class="label">Instagram</span></a></li>
-										<li><a href="#" class="icon fa-medium"><span class="label">Medium</span></a></li>
-									</ul>
+									<a href="index.html" class="logo"><strong>Mashup</strong>Estocasticos</a>
 								</header>
 
 							<!-- Banner -->
 								<section id="banner">
 									<div class="content">
 										<header>
-											<h1>Find your place in Chicago<br />
+											<h1>Tu mejor lugar en Chicago<br />
 											</h1>
-											<p>If you want moving to Chicago as a new student at University of Illinois, you'll love this site!
+											<p>Si deseas vivir en chicago, esta aplicación es para tí
 
 											</p>
 										</header>
 										<p>
-										This website is built with you in mind, you do not need to know the city of Chicago or go to find where to live while you study, we take care of helping you to find the best option for you according to your needs.
+										No busques más, solamente responde 3 sencillas preguntas y te daremos la mejor opción para tu vivienda en esta cuidad
 										</p>
 										<p>
-										<h3 >You can click on the marker to see more information about the sites shown on the map </h3>
+											Selecciona el nivel de relevancia, entre 0 y 10, que tienen para tí los siguientes aspectos
+										</p>
+										<form>
+											<b>Precio de renta:</b><br>
+											<input type="number" name="pirce" min="0" max="10"><br>
+											<br><b>Nivel de seguridad en la zona:</b><br>
+											<input type="number" name="security" min="0" max="10"><br>
+											<br><b>Cantidad de parques en la zona:</b><br>
+											<input type="number" name="parks" min="0" max="10"><br>
+										</form>
+										<p>
+										<h3 >Puedes seleccionar el indicador del mapa para obtener mayor información</h3>
 										</p>
 										<ul class="actions">
-											<li><button id="startButton" class="button big" onclick="doMagic()">Find now!</button></li>
+											<li><button id="startButton" class="button big" onclick="findPlace()">Recomiendame!</button></li>
 											<div id="show-data"></div>
 										</ul>
 										<ul class="actions">
-											<li><button id="Button" class="button big" onclick="showAllSites()">Show all Available sites!</button></li>
+											<li><button id="Button" class="button big" onclick="showAllSites()">Todos los sitios!</button></li>
 											<div id="show-data"></div>
 										</ul>
 										<ul class="actions">
-											<li><button id="Button" class="button" onclick="showAllParks()">Show all parks!</button></li>
+											<li><button id="Button" class="button" onclick="showAllParks()">Ver parques!</button></li>
 										</ul>
 									</div>
 									<span class="image object">
 									<div id="map"></div>
 									</span>
 
-								</section>
-
-							<!-- Section -->
-								<section>
-									<header class="major">
-										<h2>Charts</h2>
-
-									</header>
-									<div class="features">
-										<article>
-											<div class="content">
-												<h3>Rental</h3>
-												<p>Principal rental sites in Chicago.</p>
-											</div>
-										</article>
-										<article>
-											<div class="content">
-												<h3>Traffic</h3>
-												<p>Mean traffic in principal zones of Chicago.</p>
-											</div>
-										</article>
-										<article>
-											<div class="content">
-												<h3>Crimes</h3>
-												<p>Crimes  in Chicago city.</p>
-												<div id='dashboard'></div>
-											</div>
-										</article>
-									</div>
-								</section>
-
-							<!-- Section -->
-								<section>
-									<header class="major">
-										<h2>Results</h2>
-									</header>
-									<div class="posts">
-										<article>
-											<h2 id="weather"></h2>
-										</article>
-										<article>
-											<h3>Current sky</h3>
-											<img id="imagen" src="" width="160" height="120">
-										</article>
-										<article>
-											<a href="#" class="image"><img src="images/pic01.jpg" alt="" /></a>
-											<h3>Site one</h3>
-											<h5 id="distanceA"></h5>
-											<h5 id="durationA"></h5>
-											<h5 id="typeA"></h5>
-										</article>
-										<article>
-											<a href="#" class="image"><img src="images/pic02.png" alt="" /></a>
-											<h3>Site 2</h3>
-											<h5 id="distanceB"></h5>
-											<h5 id="durationB"></h5>
-											<h5 id="typeB"></h5>
-										</article>
-									</div>
 								</section>
 
 						</div>
@@ -151,30 +96,17 @@
 							<!-- Menu -->
 								<nav id="menu">
 									<header class="major">
-										<h2>Menu</h2>
+										<h2>Menú</h2>
 									</header>
 									<ul>
 										<li><a href="index.html">Homepage</a></li>
-										<li><a href="https://www.cityofchicago.org/city/en.html">Chicago information</a></li>
-										<li><a href="http://www.uic.edu/">University of Illinois at chicago</a></li>
 									</ul>
 								</nav>
 
-							<!-- Section -->
-								<section>
-									<header class="major">
-										<h2>suggestions</h2>
-									</header>
-									<p>For suggestions or opinions about the page and how it can improve dont forget contact us.</p>
-									<ul class="contact">
-										<li class="fa-envelope-o"><a href="#">raaramirezpe@unal.edu.co</a></li>
-									</ul>
-								</section>
-
 							<!-- Footer -->
 								<footer id="footer">
-									<p class="copyright">&copy; raaramirezpe 2017. All rights reserved.
-									 Design: <a href="https://html5up.net">HTML5 UP</a>.</p>
+									<p class="copyright">&copy; Proyecto Estocasticos 2018-1.
+									 Diseño: <a href="https://html5up.net">HTML5 UP</a>.</p>
 								</footer>
 
 						</div>
