@@ -150,30 +150,51 @@ function findPlace(){
 		var allInformation = {};
 		var closeLocations = [28,32,33,8,24,27,31,29,30,23];
 	/*Solo se tendran en cuenta las "Community Areas" donde hayan lugares en arriendo
-		Make links
+		allInformation es un arreglo de diccionarios, donde cada posición corresponde a una community area
+		y cada una tiene un diccionario con las llaves: 'rents', 'crimes' y a su vez 'crimes' contiene
+		'weaponsviolation' y 'crimesassault'
 	*/
 	for( i in rent){
+		// rent[i][0] = Community Area
 		if (!(rent[i][0] in allInformation))
 			allInformation[rent[i][0]] = new Object({'rents':	new Array(),'crimes': new Object({'weaponsviolation':	new Array(),'crimesassault':	new Array()})});
 		allInformation[rent[i][0]]['rents'].push([rent[i][1], rent[i][2], rent[i][3], rent[i][4], rent[i][5]]);
 	}
 
 	for( i in crimes){
+		// crimes[i][0] =  Community Area
 		if ((crimes[i][0] in allInformation))
 			allInformation[crimes[i][0]]['crimes']['weaponsviolation'].push([crimes[i][1], crimes[i][2], crimes[i][3], crimes[i][4], crimes[i][5]]);
 		}
 
 	for( i in crimesassault){
+		// crimesassault[i][0] =  Community Area
 		if ((crimesassault[i][0] in allInformation))
 			allInformation[crimesassault[i][0]]['crimes']['crimesassault'].push([crimesassault[i][1], crimesassault[i][2], crimesassault[i][3], crimesassault[i][4], crimesassault[i][5]]);
 		}
+	
+	// for(comunityAreaInfo in allInformation)
+	// 	console.log("infor  " + allInformation[comunityAreaInfo]['crimes']['crimesassault']);
 
 	/*----Finish links----*/
 	/* Estimate recommended places 
 	 * Es esta función se implemente el algoritmo de toma de desición
 	*/
 
-	defaultRecommendation(allInformation, closeLocations);
+	
+	let priceProbChoise = document.getElementById("price").value;
+	let securityProbChoise = document.getElementById("security").value;
+	let parksProbChoise = document.getElementById("parks").value;
+	
+	if( priceProbChoise > 10 | priceProbChoise < 0 | securityProbChoise > 10 | securityProbChoise < 0 | parksProbChoise > 10 | parksProbChoise < 0 )
+		alert("Debes seleccionar los rangos entre 0 y 10 solamente!");
+	else
+		defaultRecommendation(allInformation, closeLocations);
+		
+	console.log("Probabilidad de elegir por precio precio " + priceProbChoise);
+	console.log("Probabilidad de elegir por precio seguridad " + securityProbChoise);
+	console.log("Probabilidad de elegir por precio parques " + parksProbChoise);
+	
 
 }
 
