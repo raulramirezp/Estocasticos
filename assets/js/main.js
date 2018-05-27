@@ -1,5 +1,4 @@
 var map;
-var st = 0, ap = 0, we = 0;
 var locations = [], rent = [],  crimes = [], crimesassault = [],parks = [],parksLocations = [];
 
 /*variables que contendran la informacion en "infowindow" de google maps*/
@@ -84,10 +83,10 @@ function initMap() {
 
 	}
 	function markersCluster(){
-		var contentStringSites = [rent.length];
-		var infowindowSites = [rent.length];
+		var contentStringSites = [locations.length];
+		var infowindowSites = [locations.length];
 		
-		for(i in rent){
+		for(i in locations){
 			/*Create content for each site*/
 			contentStringSites[i] = '<div id="contentSiteA">'+
 								'<div id="siteNoticeA">'+
@@ -106,14 +105,14 @@ function initMap() {
 								'</div>';
 			/*Create new google InfoWindow for each site*/
 		}
-		for( i in rent){
+		for( i in locations){
 			infowindowSites[i] = new google.maps.InfoWindow({
 									content: contentStringSites[i],
 									maxWidth: 300
 			});
 		}
-		for( i in rent){
-		var lmarkers = locations.map(function(location, i) {
+		for( i in locations){
+		var markers = locations.map(function(location, i) {
 			var marker = new google.maps.Marker({
 				position: location,
 			});
@@ -123,9 +122,9 @@ function initMap() {
 		  return marker;
 		});
 		}
-		console.log("lmarkers "+ lmarkers);
+		
 		// Add a marker clusterer to manage the markers.
-		var markerCluster = new MarkerClusterer(map, lmarkers,
+		let markersCluster = new MarkerClusterer(map, markers,
 			{imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});
 
 	}
@@ -141,7 +140,6 @@ function defaultRecommendation(allInformation, closeLocations){
 }
 
 function RestartValues(){
-	st = 0, ap = 0, we = 0;
 	contentStringSiteA = "";
 	contentStringSiteB = "";
 	initMap();
@@ -177,7 +175,6 @@ function findPlace(){
 
 	defaultRecommendation(allInformation, closeLocations);
 
-
 }
 
 function showAllParks(){
@@ -186,6 +183,6 @@ function showAllParks(){
 }
 
 function showAllSites() {
-		RestartValues();
-		initMap.markersCluster();
+	RestartValues();
+	initMap.markersCluster();
 }

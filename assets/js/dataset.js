@@ -5,7 +5,7 @@ $( document ).ready(function() {
   			locations = [], labels =[], rent =[];
   			$.each( data.data, function( key, val ) {
   			if(val[19] != null && val[20] != null){
-  				locations.push(new google.maps.LatLng(val[19], val[20]));
+					locations.push(new google.maps.LatLng(val[20], val[19]));
           /*Community Area, property, addres, phone, lat, lon*/
           rent.push([val[9],val[11],val[12],val[14], val[19], val[20]]);
   			}
@@ -35,7 +35,7 @@ $( document ).ready(function() {
           /*Park name, address, area, lat, lon  */
           if(val[9] != null && val[10] != null &&  val[82][1] != null && val[82][2] != null)
             parks.push([val[9],val[10]]);
-            parksLocations.push(new google.maps.LatLng(val[82][1], val[82][2]));
+						parksLocations.push(new google.maps.LatLng(val[82][1], val[82][2]));
         });
       }
   	});
