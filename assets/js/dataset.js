@@ -37,10 +37,10 @@ $(document).ready(function () {
                 parks = [];
                 parksLocations = [];
                 $.each(data.data, function (key, val) {
-                    /*Park name, address, area, lat, lng  */
-                    if (val[9] != null && val[10] != null && val[82][1] != null && val[82][2] != null) {
-                        parks.push([val[9], val[10]]);
-                        parksLocations.push(new google.maps.LatLng(val[82][1], val[82][2]));
+                    /*Address, area, lat, lng  */
+                    if (val[9] != null && val[11] != null && val[19][1] != null && val[19][2] != null) {
+                        parks.push([val[11], val[9]]);
+                        parksLocations.push(new google.maps.LatLng(val[19][1], val[19][2]));
                     }
                 });
             }
@@ -50,6 +50,6 @@ $(document).ready(function () {
     dataFactory('https://data.cityofchicago.org/api/views/s6ha-ppgi/rows.json?accessType=DOWNLOAD', 'rent');
     dataFactory('https://data.cityofchicago.org/api/views/itbm-jtnw/rows.json?accessType=DOWNLOAD', 'crimes');
     dataFactory('https://data.cityofchicago.org/api/views/i5kt-jcf2/rows.json?accessType=DOWNLOAD', 'crimesassault');
-    dataFactory('https://data.cityofchicago.org/api/views/2eaw-bdhe/rows.json?accessType=DOWNLOAD', 'parks')
+    dataFactory('https://data.cityofchicago.org/api/views/4ywc-hr3a/rows.json?accessType=DOWNLOAD', 'parks')
 
 });

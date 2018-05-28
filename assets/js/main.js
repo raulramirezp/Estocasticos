@@ -139,10 +139,7 @@ function initMap() {
     initMap.parksCluster = parksCluster;
 }
 
-
-/*algorithm recommendation*/
 function defaultRecommendation(allInformation, closeLocations) {
-    console.log("Teoría de la desición aquí");
 }
 
 function RestartValues() {
@@ -166,7 +163,10 @@ function findPlace() {
         if (!(rent[i][0] in allInformation))
             allInformation[rent[i][0]] = new Object({
                 'rents': [],
-                'crimes': new Object({'weaponsviolation': [], 'crimesassault': []})
+                'crimes': new Object({'weaponsviolation': [], 'crimesassault': []}),
+                'percentage_rents': 0,
+                'percentage_crimes': 0,
+                'percentage_parks': 0
             });
         allInformation[rent[i][0]]['rents'].push([rent[i][1], rent[i][2], rent[i][3], rent[i][4], rent[i][5]]);
     }
@@ -183,25 +183,20 @@ function findPlace() {
             allInformation[crimesassault[i][0]]['crimes']['crimesassault'].push([crimesassault[i][1], crimesassault[i][2], crimesassault[i][3], crimesassault[i][4], crimesassault[i][5]]);
     }
 
-    /* Estimate recommended places
-     * Es esta función se implemente el algoritmo de toma de desición
-    */
+    let priceProbChoice = document.getElementById("price").value;
+    let securityProbChoice = document.getElementById("security").value;
+    let parksProbChoice = document.getElementById("parks").value;
 
-
-    let priceProbChoise = document.getElementById("price").value;
-    let securityProbChoise = document.getElementById("security").value;
-    let parksProbChoise = document.getElementById("parks").value;
-
-    if (priceProbChoise > 10 | priceProbChoise < 0 | securityProbChoise > 10 | securityProbChoise < 0 | parksProbChoise > 10 | parksProbChoise < 0) {
+    if (priceProbChoice > 10 | priceProbChoice < 0 | securityProbChoice > 10 | securityProbChoice < 0 | parksProbChoice > 10 | parksProbChoice < 0) {
         alert("Debes seleccionar los rangos entre 0 y 10 solamente!");
     }
     else {
         defaultRecommendation(allInformation, closeLocations);
     }
 
-    console.log("Probabilidad de elegir por precio precio " + priceProbChoise);
-    console.log("Probabilidad de elegir por precio seguridad " + securityProbChoise);
-    console.log("Probabilidad de elegir por precio parques " + parksProbChoise);
+    console.log("Probabilidad de elegir por precio precio " + priceProbChoice);
+    console.log("Probabilidad de elegir por precio seguridad " + securityProbChoice);
+    console.log("Probabilidad de elegir por precio parques " + parksProbChoice);
 
 
 }
