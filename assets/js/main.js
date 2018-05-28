@@ -95,7 +95,6 @@ function initMap() {
     function markersCluster() {
         var contentStringSites = [locations.length];
         var infowindowSites = [locations.length];
-
         for (i in locations) {
             /*Create content for each site*/
             contentStringSites[i] = '<div id="contentSiteA">' +
@@ -139,8 +138,69 @@ function initMap() {
 
     }
 
+    function drawbestNeighborhood( allInformation, bestNeighborhood ){
+        console.log( "Best community area "+ bestNeighborhood  );
+        console.log(" Informacion de bestComunity area "+ allInformation[bestNeighborhood]['rents'][0]);
+        console.log("Tamaño de rentas en esa zona " + allInformation[bestNeighborhood]['rents'].length);
+
+        var contentStringSites = [allInformation[bestNeighborhood]['rents'].length];
+        var infowindowSites = [allInformation[bestNeighborhood]['rents'].length];
+        let bestNeighborhoodLocations = [];
+        let lat;
+        let long;
+
+        for (i in allInformation[bestNeighborhood]['rents']) {
+            lat = allInformation[bestNeighborhood]['rents'][i][4];
+            long = allInformation[bestNeighborhood]['rents'][i][3];
+            console.log(" latitud y logitud " + lat + long);
+            /* Get locations for rents in the choise community area*/
+            bestNeighborhoodLocations.push(new google.maps.LatLng(lat, long));
+
+            /*Create content for each site*/
+            contentStringSites[i] = '<div id="contentSiteA">' +
+                '<div id="siteNoticeA">' +
+                '</div>' +
+                '<h2 id="firstHeading" class="firstHeading">Site information</h2>' +
+                '<div id="bodyContent">' +
+                '<h5 id="firstHeading" class="firstHeading">Community area:</h5>' +
+                bestNeighborhood + ' - ' + communityAreas[bestNeighborhood] +
+                '<h5 id="firstHeading" class="firstHeading">Property:</h5>' +
+                allInformation[bestNeighborhood]['rents'][i][0] +
+                '<h5 id="firstHeading" class="firstHeading">Address:</h5>' +
+                allInformation[bestNeighborhood]['rents'][i][1] +
+                '<h5 id="firstHeading" class="firstHeading">Phone:</h5>' +
+                allInformation[bestNeighborhood]['rents'][i][2] +
+                '</div>' +
+                '</div>';
+            /*Create new google InfoWindow for each site*/
+        }
+        for (i in allInformation[bestNeighborhood]['rents']) {
+            infowindowSites[i] = new google.maps.InfoWindow({
+                content: contentStringSites[i],
+                maxWidth: 300
+            });
+        }
+        for (i in bestNeighborhoodLocations) {
+            var markers = bestNeighborhoodLocations.map(function (location, i) {
+                var marker = new google.maps.Marker({
+                    position: location,
+                });
+                marker.addListener('click', function () {
+                    infowindowSites[i].open(map, marker);
+                });
+                return marker;
+            });
+        }
+
+        // Add a marker clusterer to manage the markers.
+        let markersCluster = new MarkerClusterer(map, markers,
+            {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});
+
+    }
+
     initMap.markersCluster = markersCluster;
     initMap.parksCluster = parksCluster;
+    initMap.drawbestNeighborhood = drawbestNeighborhood;
 }
 
 function defaultRecommendation(allInformation, priceProbChoice, securityProbChoice, parksProbChoice) {
@@ -174,6 +234,7 @@ function defaultRecommendation(allInformation, priceProbChoice, securityProbChoi
 
     const likelihoodPercentage = maxLikelihood * 100;
     alert("Tienes una afinidad del " + likelihoodPercentage.toFixed(2) + "% con la 'community area' " + bestNeighborhood + " - " + communityAreas[bestNeighborhood] + "");
+    initMap.drawbestNeighborhood(allInformation, bestNeighborhood);
 }
 
 function RestartValues() {
