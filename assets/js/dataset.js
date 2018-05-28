@@ -17,7 +17,7 @@ $(document).ready(function () {
             else if (type === "crimes") {
                 crimes = [];
                 $.each(data.data, function (key, val) {
-                    /*Community area,Date,type, place, lat, lng  */
+                    /*Community area, Date, type, place, lat, lng  */
                     if (val[10] != null && (val[13] != null && val[15] != null) && (val[21] != null && val[27] != null && val[28] != null)) {
                         crimes.push([val[21], val[10], val[13], val[15], val[27], val[28]]);
                     }
@@ -27,7 +27,7 @@ $(document).ready(function () {
             else if (type === "crimesassault") {
                 crimesassault = [];
                 $.each(data.data, function (key, val) {
-                    /*Community area,Date,type, place, lat, lng  */
+                    /*Community area, Date, type, place, lat, lng  */
                     if (val[10] != null && (val[13] != null && val[15] != null) && (val[21] != null && val[27] != null && val[28] != null)) {
                         crimesassault.push([val[21], val[10], val[13], val[15], val[27], val[28]]);
                     }
