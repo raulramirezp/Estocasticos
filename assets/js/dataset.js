@@ -4,12 +4,14 @@ $(document).ready(function () {
             if (type === "rent") {
                 locations = [];
                 labels = [];
+                communityAreas = [];
                 rent = [];
                 $.each(data.data, function (key, val) {
                     /*Community Area, property, address, phone, lat, lng*/
                     if (val[19] != null && val[20] != null) {
                         locations.push(new google.maps.LatLng(val[20], val[19]));
                         rent.push([val[9], val[11], val[12], val[14], val[19], val[20]]);
+                        communityAreas[val[9]] = val[8]
                     }
                 });
                 //console.log(data);
@@ -38,11 +40,12 @@ $(document).ready(function () {
                 parksLocations = [];
                 $.each(data.data, function (key, val) {
                     /*Address, area, lat, lng  */
-                    if (val[9] != null && val[11] != null && val[19][1] != null && val[19][2] != null) {
+                    if (val[9] != null && val[11] != null && val[17] != null && val[18] != null) {
                         parks.push([val[11], val[9]]);
-                        parksLocations.push(new google.maps.LatLng(val[19][1], val[19][2]));
+                        parksLocations.push(new google.maps.LatLng(val[17], val[18]));
                     }
                 });
+                console.log(parksLocations)
             }
         });
     }

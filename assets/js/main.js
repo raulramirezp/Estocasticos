@@ -1,4 +1,5 @@
 let map;
+let communityAreas = {};
 let locations = [], rent = [], crimes = [], crimesassault = [], parks = [], parksLocations = [];
 
 /*variables que contendran la informacion en "infowindow" de google maps*/
@@ -44,11 +45,12 @@ function initMap() {
     });
 
     function parksCluster() {
-        var contentStringParks = [parks.length];
-        var infowindowParks = [parks.length];
+        let i;
+        const maxParks = 1000;
+        let contentStringParks = [maxParks];
+        let infowindowParks = [maxParks];
 
-
-        for (i in parks) {
+        for (i = 0; i < maxParks; i++) {
             /*Create content for each site*/
             contentStringParks[i] = '<div id="contentSiteA">' +
                 '<div id="siteNoticeA">' +
@@ -64,28 +66,32 @@ function initMap() {
             /*Create new google InfoWindow for each site*/
         }
 
-        for (i in parks) {
+
+        for (i = 0; i < maxParks; i++) {
             infowindowParks[i] = new google.maps.InfoWindow({
                 content: contentStringParks[i],
                 maxWidth: 300
             });
         }
-        for (i in parks) {
-            var markers = parksLocations.map(function (location, i) {
-                var marker = new google.maps.Marker({
-                    position: location,
-                });
-                marker.addListener('click', function () {
-                    infowindowParks[i].open(map, marker);
 
-                });
-                return marker;
-            });
+        let markers = [];
+        for (i = 0; i < maxParks; i++) {
+            markers.push(mapLocation(parksLocations[i], i, infowindowParks));
         }
         // Add a marker clusterer to manage the markers.
         var parksCluster = new MarkerClusterer(map, markers,
             {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});
 
+    }
+
+    function mapLocation(location, i, infowindowParks) {
+        let marker = new google.maps.Marker({
+            position: location,
+        });
+        marker.addListener('click', function () {
+            infowindowParks[i].open(map, marker);
+        });
+        return marker;
     }
 
     function markersCluster() {
@@ -158,30 +164,73 @@ function findPlace() {
         y cada una tiene un diccionario con las llaves: 'rents', 'crimes' y a su vez 'crimes' contiene
         'weaponsviolation' y 'crimesassault'
     */
+    let sumRents = 0;
+    let sumCrimes = 0;
+    let sumParks = 0;
+
+
     for (let i in rent) {
         // rent[i][0] = Community Area
-        if (!(rent[i][0] in allInformation))
+        if (!(rent[i][0] in allInformation)) {
             allInformation[rent[i][0]] = new Object({
                 'rents': [],
                 'crimes': new Object({'weaponsviolation': [], 'crimesassault': []}),
+                'parks': [],
                 'percentage_rents': 0,
                 'percentage_crimes': 0,
                 'percentage_parks': 0
             });
+        }
         allInformation[rent[i][0]]['rents'].push([rent[i][1], rent[i][2], rent[i][3], rent[i][4], rent[i][5]]);
+        sumRents++;
     }
 
     for (let i in crimes) {
         // crimes[i][0] =  Community Area
-        if ((crimes[i][0] in allInformation))
+        if ((crimes[i][0] in allInformation)){
             allInformation[crimes[i][0]]['crimes']['weaponsviolation'].push([crimes[i][1], crimes[i][2], crimes[i][3], crimes[i][4], crimes[i][5]]);
+            sumCrimes++;
+        }
     }
 
     for (let i in crimesassault) {
         // crimesassault[i][0] =  Community Area
-        if ((crimesassault[i][0] in allInformation))
+        if ((crimesassault[i][0] in allInformation)){
             allInformation[crimesassault[i][0]]['crimes']['crimesassault'].push([crimesassault[i][1], crimesassault[i][2], crimesassault[i][3], crimesassault[i][4], crimesassault[i][5]]);
+            sumCrimes++;
+        }
     }
+
+    for (let i in parks) {
+        // parks[i][0] =  Community Area
+        if ((parks[i][0] in allInformation)){
+            allInformation[parks[i][0]]['parks'].push(parks[i]);
+            sumParks++;
+        }
+    }
+
+
+    let sumPercentageRents = 0;
+    let sumPercentageCrimes = 0;
+    let sumPercentageParks = 0;
+
+    for (let key in allInformation) {
+        if (allInformation.hasOwnProperty(key)) {
+            let communityArea = allInformation[key];
+            communityArea['percentage_rents'] = communityArea['rents'].length / sumRents;
+            communityArea['percentage_crimes'] = (communityArea['crimes']['weaponsviolation'].length + communityArea['crimes']['crimesassault'].length) / sumCrimes;
+            communityArea['percentage_parks'] = communityArea['parks'].length / sumParks;
+
+            sumPercentageRents += communityArea['percentage_rents'];
+            sumPercentageCrimes += communityArea['percentage_crimes'];
+            sumPercentageParks += communityArea['percentage_parks'];
+        }
+    }
+
+    console.log("Validation Percentage Rents " + " : " + sumPercentageRents);
+    console.log("Validation Percentage Crimes " + " : " + sumPercentageCrimes);
+    console.log("Validation Percentage Parks " + " : " + sumPercentageParks);
+
 
     let priceProbChoice = document.getElementById("price").value;
     let securityProbChoice = document.getElementById("security").value;
