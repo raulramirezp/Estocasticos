@@ -46,7 +46,7 @@ function initMap() {
 
     function parksCluster() {
         let i;
-        const maxParks = 1000;
+        const maxParks = 2000;
         let contentStringParks = [maxParks];
         let infowindowParks = [maxParks];
 
@@ -57,8 +57,6 @@ function initMap() {
                 '</div>' +
                 '<h2 id="firstHeading" class="firstHeading">Park information</h2>' +
                 '<div id="bodyContent">' +
-                '<h5 id="firstHeading" class="firstHeading">Park name:</h5>' +
-                parks[i][0] +
                 '<h5 id="firstHeading" class="firstHeading">Address:</h5>' +
                 parks[i][1] +
                 '</div>' +
@@ -106,7 +104,7 @@ function initMap() {
                 '<h2 id="firstHeading" class="firstHeading">Site information</h2>' +
                 '<div id="bodyContent">' +
                 '<h5 id="firstHeading" class="firstHeading">Community area:</h5>' +
-                rent[i][0] +
+                rent[i][0] + ' - ' + communityAreas[rent[i][0]] +
                 '<h5 id="firstHeading" class="firstHeading">Property:</h5>' +
                 rent[i][1] +
                 '<h5 id="firstHeading" class="firstHeading">Address:</h5>' +
@@ -145,7 +143,37 @@ function initMap() {
     initMap.parksCluster = parksCluster;
 }
 
-function defaultRecommendation(allInformation, closeLocations) {
+function defaultRecommendation(allInformation, priceProbChoice, securityProbChoice, parksProbChoice) {
+    let bestNeighborhood;
+    let maxLikelihood = 0;
+
+    function calculateLikelihood(communityRents, communityCrimes, communityParks, userRentsChoice, userCrimesChoice, userParksChoice) {
+        return (communityRents * userRentsChoice) +
+            ((1 - communityCrimes) * userCrimesChoice) +
+            (communityParks * userParksChoice);
+    }
+
+    for (let key in allInformation) {
+        if (allInformation.hasOwnProperty(key)) {
+            let communityArea = allInformation[key];
+
+            let likelyhood = calculateLikelihood(communityArea['percentage_rents'],
+                communityArea['percentage_crimes'],
+                communityArea['percentage_parks'],
+                priceProbChoice,
+                securityProbChoice,
+                parksProbChoice);
+
+            if (likelyhood > maxLikelihood) {
+                maxLikelihood = likelyhood;
+                bestNeighborhood = key;
+            }
+
+        }
+    }
+
+    const likelihoodPercentage = maxLikelihood * 100;
+    alert("Tienes una afinidad del " + likelihoodPercentage.toFixed(2) + "% con la 'community area' " + bestNeighborhood + " - " + communityAreas[bestNeighborhood] + "");
 }
 
 function RestartValues() {
@@ -158,11 +186,11 @@ function findPlace() {
     /*Restart values */
     RestartValues();
     const allInformation = {};
-    const closeLocations = [28, 32, 33, 8, 24, 27, 31, 29, 30, 23];
-    /*Solo se tendran en cuenta las "Community Areas" donde hayan lugares en arriendo
-        allInformation es un arreglo de diccionarios, donde cada posición corresponde a una community area
-        y cada una tiene un diccionario con las llaves: 'rents', 'crimes' y a su vez 'crimes' contiene
-        'weaponsviolation' y 'crimesassault'
+    /*
+    Solo se tendran en cuenta las "Community Areas" donde hayan lugares en arriendo
+            allInformation es un arreglo de diccionarios, donde cada posición corresponde a una community area
+            y cada una tiene un diccionario con las llaves: 'rents', 'crimes' y a su vez 'crimes' contiene
+            'weaponsviolation' y 'crimesassault'
     */
     let sumRents = 0;
     let sumCrimes = 0;
@@ -187,7 +215,7 @@ function findPlace() {
 
     for (let i in crimes) {
         // crimes[i][0] =  Community Area
-        if ((crimes[i][0] in allInformation)){
+        if ((crimes[i][0] in allInformation)) {
             allInformation[crimes[i][0]]['crimes']['weaponsviolation'].push([crimes[i][1], crimes[i][2], crimes[i][3], crimes[i][4], crimes[i][5]]);
             sumCrimes++;
         }
@@ -195,7 +223,7 @@ function findPlace() {
 
     for (let i in crimesassault) {
         // crimesassault[i][0] =  Community Area
-        if ((crimesassault[i][0] in allInformation)){
+        if ((crimesassault[i][0] in allInformation)) {
             allInformation[crimesassault[i][0]]['crimes']['crimesassault'].push([crimesassault[i][1], crimesassault[i][2], crimesassault[i][3], crimesassault[i][4], crimesassault[i][5]]);
             sumCrimes++;
         }
@@ -203,7 +231,7 @@ function findPlace() {
 
     for (let i in parks) {
         // parks[i][0] =  Community Area
-        if ((parks[i][0] in allInformation)){
+        if ((parks[i][0] in allInformation)) {
             allInformation[parks[i][0]]['parks'].push(parks[i]);
             sumParks++;
         }
@@ -232,15 +260,17 @@ function findPlace() {
     console.log("Validation Percentage Parks " + " : " + sumPercentageParks);
 
 
-    let priceProbChoice = document.getElementById("price").value;
-    let securityProbChoice = document.getElementById("security").value;
-    let parksProbChoice = document.getElementById("parks").value;
+    let priceProbChoice = parseFloat(document.getElementById("price").value);
+    let securityProbChoice = parseFloat(document.getElementById("security").value);
+    let parksProbChoice = parseFloat(document.getElementById("parks").value);
+    let sumProbability = parseFloat(priceProbChoice) + parseFloat(securityProbChoice) + parseFloat(parksProbChoice);
+    console.log("prob " + sumProbability);
 
-    if (priceProbChoice > 10 | priceProbChoice < 0 | securityProbChoice > 10 | securityProbChoice < 0 | parksProbChoice > 10 | parksProbChoice < 0) {
-        alert("Debes seleccionar los rangos entre 0 y 10 solamente!");
+    if (sumProbability !== 1.0) {
+        alert("Recuerda que la suma de las probabilidades debe ser 1.0!");
     }
     else {
-        defaultRecommendation(allInformation, closeLocations);
+        defaultRecommendation(allInformation, priceProbChoice, securityProbChoice, parksProbChoice);
     }
 
     console.log("Probabilidad de elegir por precio precio " + priceProbChoice);
